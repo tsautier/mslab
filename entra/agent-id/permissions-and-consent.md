@@ -330,10 +330,10 @@ Example: agent identity to use `SecurityIncident.Read.All` permission on behalf 
 ```pwsh
 $endpointuri = "https://graph.microsoft.com/v1.0/servicePrincipals(appId='00000003-0000-0000-c000-000000000000')"
 Invoke-RestMethod $endpointuri -Headers $headers | Tee-Object -Variable GraphSP
-$PermissionName = 'SecurityIncident.Read.All'
+$PermissionName = 'ThreatHunting.Read.All SecurityAlert.ReadWrite.All SecurityIncident.ReadWrite.All'
 ```
 
-#### 5.2.2. Grant permission to agent blueprint principal
+#### 5.2.2. Grant permission to agent identity
 
 Notice that `consentType` is set to `Principal` and the authorized principal is scoped only to the agent user (`principalId`: `$AgentUser.id`)
 
@@ -357,16 +357,16 @@ $permissions = @(
   'SecurityAlert.ReadWrite.All',
   'SecurityIncident.ReadWrite.All'
 )
+endpointuri = "https://graph.microsoft.com/v1.0/servicePrincipals(appId='00000003-0000-0000-c000-000000000000')"
+$GraphSP = Invoke-RestMethod $endpointuri -Headers $headers
 foreach ( $PermissionName in $permissions ) {
-	$endpointuri = "https://graph.microsoft.com/v1.0/servicePrincipals(appId='00000003-0000-0000-c000-000000000000')"
-	$GraphSP = Invoke-RestMethod $endpointuri -Headers $headers
-	$AppRole = $GraphSP.appRoles | ? { $_.value -eq $PermissionName }
-	$endpointuri = "https://graph.microsoft.com/v1.0/servicePrincipals/$($AgentId.id)/appRoleAssignments"
-	$body=@{
-		principalId = $AgentId.id
-		resourceId = $GraphSP.id
-		appRoleId = $AppRole.id
-	}
-	Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | ConvertTo-Json) -ContentType 'application/json'
+  $AppRole = $GraphSP.appRoles | ? { $_.value -eq $PermissionName }
+  $endpointuri = "https://graph.microsoft.com/v1.0/servicePrincipals/$($AgentId.id)/appRoleAssignments"
+  $body=@{
+    principalId = $AgentId.id
+    resourceId = $GraphSP.id
+    appRoleId = $AppRole.id
+  }
+  Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | ConvertTo-Json) -ContentType 'application/json'
 }
 ```
