@@ -405,10 +405,8 @@ Notice:
 
 The [update application](https://learn.microsoft.com/en-us/graph/api/application-update) API is used to expose the `access_agent` API on the agent identity blueprint
 
-`/beta` is used here because the `v1.0` spec does not have the ability to update agent identity blueprint application
-
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)"
 $accessagentscopeid = [guid]::NewGuid().ToString()
 $body = @{
   identifierUris = @( "api://$($AgentIdBp.id)" )
