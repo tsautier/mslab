@@ -259,7 +259,7 @@ for ($i = 0; $i -lt $appRoleAssignments.value.Length; $i++) {
 
 ## 4. Agent blueprint inheritable permissions [ᵈᵒᶜ](https://learn.microsoft.com/en-us/entra/agent-id/identity-professional/configure-inheritable-permissions-blueprints)
 
-> To be eligible for inheritance, the agent blueprint service principal must already hold OAuth2PermissionGrants for those scopes to the target resource app.
+To be eligible for inheritance, the agent blueprint service principal must already hold OAuth2PermissionGrants for those scopes to the target resource app.
 
 ## 4.1. Configure inheritable permissions on agent blueprint [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/agentidentityblueprint-post-inheritablepermissions)
 
