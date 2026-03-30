@@ -78,7 +78,7 @@ $tenantDomain = 'MngEnvMCAP398230.onmicrosoft.com'
 ### 1.1. Create agent blueprint [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/agentidentityblueprint-post)
 
 ```pwsh
-$endpointuri = 'https://graph.microsoft.com/beta/applications/microsoft.graph.agentIdentityBlueprint'
+$endpointuri = 'https://graph.microsoft.com/v1.0/applications/microsoft.graph.agentIdentityBlueprint'
 $body=@{
   '@odata.type' = 'Microsoft.Graph.AgentIdentityBlueprint'
   displayName = $AgentIdBpName
@@ -91,7 +91,7 @@ Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | Co
 ### 1.2. Create agent blueprint principal [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/agentidentityblueprintprincipal-post)
 
 ```pwsh
-$endpointuri = 'https://graph.microsoft.com/beta/serviceprincipals/graph.agentIdentityBlueprintPrincipal'
+$endpointuri = 'https://graph.microsoft.com/v1.0/serviceprincipals/graph.agentIdentityBlueprintPrincipal'
 $body=@{
   appId = $AgentIdBp.id
 }
@@ -105,7 +105,7 @@ Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | Co
 ##### 1.3.A.1. Add password [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/agentidentityblueprint-addpassword)
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/addPassword"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/addPassword"
 $body=@{
   passwordCredential = @{
     displayName = ''
@@ -117,7 +117,7 @@ Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | Co
 ##### 1.3.A.2. Delete password [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/agentidentityblueprint-removepassword)
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/removePassword"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/removePassword"
 $body=@{ keyId = $AgentIdBpPw.keyId }
 Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | ConvertTo-Json) -ContentType 'application/json'
 ```
@@ -138,7 +138,7 @@ Invoke-RestMethod $endpointuri -Headers $headers | Tee-Object -Variable managedI
 ##### 1.3.B.2. Add FIC [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/federatedidentitycredential-post)
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/federatedIdentityCredentials"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/federatedIdentityCredentials"
 $body=@{
   name = 'azure-vm-mi-fic'
   issuer = "https://login.microsoftonline.com/$tenant/v2.0"
@@ -151,7 +151,7 @@ Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | Co
 ##### 1.3.B.3. Delete FIC [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/federatedidentitycredential-delete)
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/federatedIdentityCredentials/$($body.name)"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/federatedIdentityCredentials/$($body.name)"
 Invoke-RestMethod $endpointuri -Method Delete -Headers $headers
 ```
 
@@ -162,7 +162,7 @@ Invoke-RestMethod $endpointuri -Method Delete -Headers $headers
 > Use an agent blueprint access token to create agent identity; read: [get agent blueprint graph api access token](auth-flows.md#21-graph-api-access-token)
 
 ```pwsh
-$endpointuri = 'https://graph.microsoft.com/beta/servicePrincipals/microsoft.graph.agentIdentity'
+$endpointuri = 'https://graph.microsoft.com/v1.0/servicePrincipals/microsoft.graph.agentIdentity'
 $body=@{
   displayName = $AgentIdName
   agentIdentityBlueprintId = $AgentIdBp.id
@@ -198,7 +198,7 @@ Invoke-RestMethod $endpointuri -Method Post -Headers $headersAgentIdBp -Body $($
 
 ```pwsh
 $filter = "displayName eq '$AgentIdBpName'"
-$endpointuri = 'https://graph.microsoft.com/beta/applications/microsoft.graph.agentIdentityBlueprint?$filter='+$filter
+$endpointuri = 'https://graph.microsoft.com/v1.0/applications/microsoft.graph.agentIdentityBlueprint?$filter='+$filter
 $AgentIdBp = (Invoke-RestMethod $endpointuri -Headers $headers).value
 ```
 
@@ -206,7 +206,7 @@ $AgentIdBp = (Invoke-RestMethod $endpointuri -Headers $headers).value
 
 ```pwsh
 $filter = "displayName eq '$AgentIdBpName'"
-$endpointuri = 'https://graph.microsoft.com/beta/servicePrincipals/microsoft.graph.agentIdentityBlueprintPrincipal?$filter='+$filter
+$endpointuri = 'https://graph.microsoft.com/v1.0/servicePrincipals/microsoft.graph.agentIdentityBlueprintPrincipal?$filter='+$filter
 $AgentIdBpPrincipal = (Invoke-RestMethod $endpointuri -Headers $headers).value
 ```
 
@@ -214,7 +214,7 @@ $AgentIdBpPrincipal = (Invoke-RestMethod $endpointuri -Headers $headers).value
 
 ```pwsh
 $filter = "displayName eq '$AgentIdName'"
-$endpointuri = 'https://graph.microsoft.com/beta/servicePrincipals/microsoft.graph.agentIdentity?$filter='+$filter
+$endpointuri = 'https://graph.microsoft.com/v1.0/servicePrincipals/microsoft.graph.agentIdentity?$filter='+$filter
 $AgentId = (Invoke-RestMethod $endpointuri -Headers $headers).value
 ```
 
@@ -235,7 +235,7 @@ $AgentUser = (Invoke-RestMethod $endpointuri -Headers $headers).value
 > Agent blueprint principal is deleted when agent blueprint is deleted
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint"
 Invoke-RestMethod $endpointuri -Method Delete -Headers $headers
 ```
 
@@ -248,7 +248,7 @@ Invoke-RestMethod $endpointuri -Method Delete -Headers $headers
 > There also doesn't seem to be a docs for deleting agent identity, but deleting service prinicpal works
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/serviceprincipals/$($AgentId.id)"
+$endpointuri = "https://graph.microsoft.com/v1.0/serviceprincipals/$($AgentId.id)"
 Invoke-RestMethod $endpointuri -Method Delete -Headers $headers
 ```
 
