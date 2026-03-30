@@ -59,7 +59,7 @@ $DelegatedRole = $GraphSP.oauth2PermissionScopes | ? { $_.value -eq $PermissionN
 > Use `type`: `Scope` when granting delegated permission
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)"
 $body = @{
   requiredResourceAccess = @(
     @{
@@ -141,7 +141,7 @@ $AppRole = $GraphSP.appRoles | ? { $_.value -eq $PermissionName }
 > Use `type`: `Role` when granting application permission
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)"
 $body = @{
   requiredResourceAccess = @(
     @{
@@ -214,7 +214,7 @@ $endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)"
 > This empties `requiredResourceAccess`, clearing **ALL** permissions from the _application_
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)"
 $body = @{
   requiredResourceAccess = @()
 }
@@ -268,7 +268,7 @@ for ($i = 0; $i -lt $appRoleAssignments.value.Length; $i++) {
 > Although doc says that `AgentIdentityBlueprint.Create` is the minimum permission, it seems like `AgentIdentityBlueprint.ReadWrite.All` is required to configure inheritable permissions
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/inheritablePermissions"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/inheritablePermissions"
 $body=@{
   resourceAppId = '00000003-0000-0000-c000-000000000000'
   inheritableScopes = @{
@@ -284,7 +284,7 @@ Invoke-RestMethod $endpointuri -Method Post -Headers $headers -Body $($body | Co
 ## 4.2. List inheritable permissions [ᵈᵒᶜ](https://learn.microsoft.com/en-us/graph/api/agentidentityblueprint-list-inheritablepermissions)
 
 ```pwsh
-$endpointuri = "https://graph.microsoft.com/beta/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/inheritablePermissions"
+$endpointuri = "https://graph.microsoft.com/v1.0/applications/$($AgentIdBp.id)/microsoft.graph.agentIdentityBlueprint/inheritablePermissions"
 Invoke-RestMethod $endpointuri -Headers $headers
 ```
 
